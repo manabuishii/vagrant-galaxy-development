@@ -2,6 +2,7 @@
   become: yes
   vars:
     user: vagrant
+    galaxy_repo: https://github.com/common-workflow-language/galaxy.git
   tasks:
     - name: Set timezone
       timezone: name=Asia/Tokyo
@@ -37,8 +38,18 @@
 
     - name: Clone galaxy repository
       git:
-        repo: https://github.com/galaxyproject/galaxy.git
+        repo: https://github.com/common-workflow-language/galaxy.git
+        depth: 1
         dest: /home/{{user}}/galaxy
+      become_user: "{{user}}"
+
+    - name: "Galaxy host 0.0.0.0"
+      lineinfile: >-
+        dest=/home/{{user}}/galaxy/config/galaxy.ini.sample
+        state=present
+        backrefs=yes
+        regexp='^#host'
+        line='host = 0.0.0.0'
       become_user: "{{user}}"
 
     - name: Run Galaxy run.sh --daemon
