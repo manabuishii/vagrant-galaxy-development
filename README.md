@@ -23,4 +23,3 @@ Admin user
 |     Username     | Password |
 |:----------------:|:--------:|
 | admin@galaxy.org |  admin   |
-                 |          |
