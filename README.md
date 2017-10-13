@@ -16,6 +16,12 @@ For example almost 6 minutes.
 rake spec
 ```
 
+# How to access Galaxy
+
+```
+http://localhost:8080
+```
+
 # Default user
 
 Admin user
