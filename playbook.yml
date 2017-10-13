@@ -76,3 +76,8 @@
       with_items:
         - { src: '\{\{ use_pbkdf2 \}\}', dst: 'False' } # replace use_pbkdf2
         - { src: '\{\{ galaxy_server_dir \}\}', dst: '/home/{{user}}/galaxy' } # replace library path
+    - name: Create admin user by create_galaxy_user.py
+      shell: source .venv/bin/activate ; python /home/{{user}}/create_galaxy_user.py --user admin@galaxy.org --password admin --key admin
+      args:
+        chdir: /home/{{user}}/galaxy
+      become_user: "{{user}}"
