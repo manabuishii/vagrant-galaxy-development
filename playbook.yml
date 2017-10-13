@@ -52,7 +52,14 @@
         insertafter=yes
         line='host = 0.0.0.0'
       become_user: "{{user}}"
-
+    - name: "Add admin user"
+      lineinfile: >-
+        dest=/home/{{user}}/galaxy/config/galaxy.ini.sample
+        state=present
+        backrefs=yes
+        regexp='^#admin_users = None'
+        line='admin_users = admin@galaxy.org'
+      become_user: "{{user}}"
     - name: Run Galaxy run.sh --daemon
       command: sh /home/{{user}}/galaxy/run.sh --daemon
       become_user: "{{user}}"
