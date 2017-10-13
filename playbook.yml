@@ -48,10 +48,31 @@
         dest=/home/{{user}}/galaxy/config/galaxy.ini.sample
         state=present
         backrefs=yes
-        regexp='^#host'
+        regexp='^# available network interfaces.'
+        insertafter=yes
         line='host = 0.0.0.0'
       become_user: "{{user}}"
 
     - name: Run Galaxy run.sh --daemon
       command: sh /home/{{user}}/galaxy/run.sh --daemon
       become_user: "{{user}}"
+    - name: wait for Galaxy port up
+      wait_for:
+        port=8080
+        state=started
+        delay=30
+        timeout=500
+      #delegate_to: 127.0.0.1
+    - name: Get create_galaxy_user.py
+      get_url:
+        url: https://raw.githubusercontent.com/galaxyproject/ansible-galaxy-extras/master/templates/create_galaxy_user.py.j2
+        dest: /home/{{user}}/create_galaxy_user.py
+    - name: "Replace create_galaxy_user.py"
+      replace: >-
+        dest=/home/{{user}}/create_galaxy_user.py
+        regexp={{ item.src }}
+        replace={{ item.dst }}
+      become_user: "{{user}}"
+      with_items:
+        - { src: '\{\{ use_pbkdf2 \}\}', dst: 'False' } # replace use_pbkdf2
+        - { src: '\{\{ galaxy_server_dir \}\}', dst: '/home/{{user}}/galaxy' } # replace library path
