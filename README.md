@@ -29,3 +29,10 @@ Admin user
 |     Username     | Password |
 |:----------------:|:--------:|
 | admin@galaxy.org |  admin   |
+
+# stop daemon
+
+```
+cd ~/galaxy
+./run.sh --stop-daemon
+```
