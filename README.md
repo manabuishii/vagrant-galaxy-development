@@ -30,9 +30,17 @@ Admin user
 |:----------------:|:--------:|
 | admin@galaxy.org |  admin   |
 
-# stop daemon
+# How to stop and restart Galaxy daemon
+
+## stop Galaxy daemon
 
 ```
-cd ~/galaxy
 ./run.sh --stop-daemon
 ```
+
+## restart Galaxy daemon
+
+```
+./run.sh restart
+```
+
